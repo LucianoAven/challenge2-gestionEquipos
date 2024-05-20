@@ -1,0 +1,93 @@
+/* */
+
+body {
+    background-color: rgb(9, 91, 9);
+}
+
+img {
+    /* Centralizo la imagen */
+    display: block; 
+    margin-left: auto;
+    margin-right: auto;
+    width: 790px; /* Alto de la imagen */
+    height: 640px; /* Ancho de la imagen */
+    margin-top: auto; /* Margen superior */
+    margin-bottom: auto; /* Margen inferior */
+}
+
+#container {
+    position: relative;
+}
+
+#jugadores {
+    color: black;
+    font-weight: bold; /* Remarca simbolos */
+    padding: 10px; /* Bajar la posición de los elementos */
+}
+
+#detalles {
+    position: absolute; /* Se pociciona encima de otro elemento con position: relative; */
+    transform: translate(-50%, -50%); /* Centra el contenido en el medio de la imagen */
+    top: 40%;
+    left: 48.5%;
+    width: 260px;
+    list-style-type: none; /* Eliminar los puntos de las etiquetas <li> */
+    font-weight: bold;
+    font-size: 24px;
+}
+
+#detalles button {
+    margin-inline: 2px 2px; /* Espacio entre los botones */
+    margin-left: 10%;
+    margin-bottom: 27px; /* Margen inferior de los botones */
+}
+
+#datosJugadores {
+    margin-left: 10%; /* Regular margen izquierdo del elemento */
+}
+
+#listaArqueros, #listaDefensores, #listaMedios, #listaDelanteros {
+    list-style-type: none; /* Eliminar los puntos de las etiquetas <li> */
+    position: absolute;
+    transform: translate(-50%, -50%); /* Centra el contenido en el medio de la imagen */
+    display: flex;
+}
+
+#listaArqueros {
+    top: 10%; /* Posición vertical del elemento */
+    left: 48.5%; /* Posición horizontal del elemento */
+}
+
+
+#listaDefensores {    
+    top: 28%;
+    left: 48.5%;    
+}
+
+#listaMedios {
+    top: 46%;
+    left: 48.5%;    
+}
+
+#listaDelanteros {
+    top: 64%;
+    left: 48.5%;    
+}
+
+#arqueros, #defensores, #medios, #delanteros {
+    background-color: rgba(16, 117, 19, 0.753); /* Color del fondo */
+    padding: 7px; /* Modifica el tamaño del elemento */
+    max-width: 120px; /* Ancho máximo que puede alcanzar el elemento */
+    
+    text-align: center; /* Centrar el texto */
+    margin-inline: 12px 12px; /* Espacio entre cada elemento */
+}
+
+button {
+    padding-block: 2px; /* Ancho de los botones */
+}
+
+#posicionEquipo {
+    margin-top: 5px; /* Modificar margen superior del párrafo '<p>' */
+    margin-bottom: 5px; /* Modificar margen inferior del párrafo '<p> */
+}

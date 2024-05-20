@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Equipo de futbol</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="styles.css"/>
+    </head>
+
+    <body>
+
+        <div id="container">
+            
+            <!-- Plantilla para organizar equipos de fútbol -->
+            <img src="img/alineacionFutbol.jpg" alt="Plantilla para alinear equipos de fútbol">
+
+            <!-- Etiqueta donde se almacenaran todos los jugadores -->
+            <div id="jugadores">
+                <!-- Listas de los jugadores de cada categoría -->
+                <ul id="listaArqueros"></ul>
+                <ul id="listaDefensores"></ul>
+                <ul id="listaMedios"></ul>
+                <ul id="listaDelanteros"></ul>
+            </div>
+
+            <div id="detalles"></div>
+
+        </div>        
+
+        <script>            
+            
+            // Función para agregar un jugador en la posición seleccionada.
+            const agregarJugador = (posicionLista, lista) => {
+                // Ingresar nombre del jugador
+                let jugador = prompt("Introduzca nombre y apellido del jugador.");
+
+                while (jugador == " " || jugador == "") {
+                    jugador = prompt("No se detectó información en el nombre, inténtalo de nuevo.");
+                };
+            
+                // Números para verificar que la edad sea válida.
+                const numeros = "1234567890";
+
+                // Introducir edad del jugador
+                let edadJugador = prompt("Introduzca edad del jugador");
+
+                let revision = true;
+
+                // Revisa cara simbolo de la edad registrada para asegurar su uso.
+                while (revision) {
+                    let edad = true;
+
+                    // Revisa cada símbolo de la edad incorporada.
+                    if (edadJugador == "") {
+                        edad = false
+
+                    } else {
+
+                        for (const simbolo of edadJugador) {
+                            // En caso que se detecte un símbolo que no sea un número principal.
+                            if (!numeros.includes(simbolo)) {
+                                edad = false;
+                                break;
+                            }
+                        };
+                    };
+                    
+                    // Permite que el usuario vuelva a intentar ingresar una edad válida.
+                    if (edad) {
+                        revision = false;
+                    } else {
+                        edadJugador = prompt("La edad ingresada no es válida, inténtalo de nuevo.")
+                    };
+                };
+
+                // Método promesa en caso de inconveniente.
+                const promesaJugador = new Promise((resolve, reject) => {
+   
+                    // Tiempo de espera para generar la alerta.
+                    setTimeout(() => {
+                        // En caso de no haberse encontrado información transmitida.
+                        if (jugador == null || edadJugador == null) {
+                            // Mensaje para avisar de un error ocurrido.
+                            reject("¡No se detectó información del jugador, inténtalo de nuevo!");
+    
+                        } else {
+                            // Cambio el elemento de la lista por los datos del jugador.
+                            lista[posicionLista] = {nombre: jugador, edad: edadJugador};
+                            formacion(lista);
+                            // Mensaje para avisar que todo funcionó correctamente.
+                            resolve("Jugador agregado con éxito");
+                        };
+                    }, 750);
+
+                });
+
+                // Correr la función Promises.
+                promesaJugador
+                    .then((resultado) => {
+                        // Mensaje de buen funcionamiento en forma de alerta.
+                        alert(resultado)
+                    })
+                    .catch((error) => {
+                        // Mensaje de error en forma de alerta.
+                        alert(error)
+                    });
+            };
+
+            // Detalles del jugador.
+            const verDetalles = (posicionList, nombreEdad, puesto, lism) => {
+
+                // Vinculo la variable con la etiqueta que mostrará los detalles del jugador.
+                const ventanaDetalles = document.getElementById("detalles");
+
+                // Color del fondo del cuadro de texto.
+                ventanaDetalles.style.backgroundColor = "rgb(67, 134, 44)";
+
+                // Información del jugador.
+                const informacionJugador = document.createElement("p");
+
+                informacionJugador.id = "datosJugadores";
+
+                // La etiqueta <u> permite subrayar el texto que se encuentre dentro de la misma.
+                informacionJugador.innerHTML = `<u>Nombre:</u> ${nombreEdad.nombre}`;
+                informacionJugador.innerHTML += `<br><br><u>Edad:</u> ${nombreEdad.edad}`;
+                informacionJugador.innerHTML += `<br><br><u>Posicion:</u> ${puesto}`;
+
+                // Botón para intercambiar jugador.
+                const botonCambiar = document.createElement("button");                
+                // Función para volver a agregar jugadores.
+                botonCambiar.onclick = function() {
+
+                    // Cierro la ventana de información para pasar a la de agregar jugadores.
+                    ventanaDetalles.innerHTML = "";
+                    // Vinculo el botón con la función para agregar jugadores
+                    return agregarJugador(posicionList, lism);
+
+                };
+                // Cambio nombre del botón.
+                botonCambiar.innerHTML = "Cambiar jugador";                
+
+                // Botón para volver al inicio.
+                const botonVolver = document.createElement("button");
+                // Nombre del botón.
+                botonVolver.innerHTML = "Volver";
+                // Función del voton para volver.
+                botonVolver.onclick = function() {
+                    return ventanaDetalles.innerHTML = ""
+                };
+
+                ventanaDetalles.appendChild(informacionJugador);
+                ventanaDetalles.appendChild(botonCambiar);
+                ventanaDetalles.appendChild(botonVolver);
+            };
+
+            const formacion = (lista) => {
+                // Vinculo la variable con la etiqueta que almacenará cada tipo de jugador.
+                const listaArqueros = document.getElementById("listaArqueros");
+                const listaDefensores = document.getElementById("listaDefensores");
+                const listaMedios = document.getElementById("listaMedios");
+                const listaDelanteros = document.getElementById("listaDelanteros");
+                // Vaciar la etiqueta ul para rehacerla con todas las modificaciones.
+                listaArqueros.innerHTML = "";
+                listaDefensores.innerHTML = "";
+                listaMedios.innerHTML = "";
+                listaDelanteros.innerHTML = "";
+            
+                // Cantidad de jugadores que debe haber en el equipo.
+                lista.length = 11;
+
+                // Recorro la lista con los datos de los jugadores.
+                for (let x = 0; x < lista.length; x++) {
+
+                    // Establezco la posición de cada jugador.
+                    const posicion = document.createElement("p");
+                    posicion.id = "posicionEquipo";
+
+                    // Botón para agregar un jugador en una posición del equipo.
+                    const boton = document.createElement("button");                    
+
+                    // Vincula el botón con la función para agregar jugadores
+                    boton.onclick = function() {
+                        return agregarJugador(x, lista)
+                    };
+
+                    boton.innerHTML = "Agregar jugador";
+
+                    // Creo las etiquetas sin información de algún jugador que se mostrará en pantalla.
+                    if (x == 0) {
+                        // Crea etiquetas <li> con id y contenido.
+                        const arqueroLi = document.createElement("li");
+                        arqueroLi.id = "arqueros";
+
+                        // En caso de estar vacío el elemento de la lista.
+                        if (lista[x] == null) {
+                            // Texto que contendrá la etiqueta si no hay información.
+                            arqueroLi.textContent = `Espacio vacío`;
+                        } else {
+                            // Texto de la etiqueta si se detecta información.
+                            arqueroLi.textContent = `${lista[x].nombre}`;
+
+                            // Redirecciono el botón para que muestre los detalles del jugador.
+                            boton.onclick = function() {
+                                // Envío los detalles como elementos.
+                                return verDetalles(x, lista[x], `Arquero`, lista)
+                            };
+
+                            boton.innerHTML = "Ver detalles";
+                        };
+
+                        posicion.textContent = `(Arquero)`;
+
+                        arqueroLi.appendChild(posicion);
+                        // Agrega el botón para agregar jugador dentro de la etiqueta del jugador.
+                        arqueroLi.appendChild(boton);
+
+                        // Agrego la etiqueta del jugador en la etiqueta ul principal.
+                        listaArqueros.appendChild(arqueroLi);
+
+                    } else if (x < 5) {
+                        const defensoresLi = document.createElement("li");
+                        defensoresLi.id = "defensores";
+
+                        if (lista[x] == null) {
+                            defensoresLi.textContent = `Espacio vacío`;
+                        } else {
+                            defensoresLi.textContent = `${lista[x].nombre}`;
+
+                            // Redirecciono el botón para que muestre los detalles del jugador.
+                            boton.onclick = function() {
+                                // Envío los detalles como elementos.
+                                return verDetalles(x, lista[x], `Defensor`, lista)
+                            };
+
+                            boton.innerHTML = "Ver detalles";                            
+                        };
+
+                        posicion.textContent = `(Defensor)`
+
+                        defensoresLi.appendChild(posicion)
+                        // Agrega el botón para agregar jugador dentro de la etiqueta del jugador.
+                        defensoresLi.appendChild(boton);
+                        // Agrego la etiqueta del jugador en la etiqueta ul principal.
+                        listaDefensores.appendChild(defensoresLi);
+
+                    } else if (x < 8) {
+                        const mediosLi = document.createElement("li");
+                        mediosLi.id = "medios";
+
+                        if (lista[x] == null) {
+                            mediosLi.textContent = `Espacio vacío`;
+                        } else {
+                            mediosLi.textContent = `${lista[x].nombre}`;
+
+                            // Redirecciono el botón para que muestre los detalles del jugador.
+                            boton.onclick = function() {
+                                // Envío los detalles como elementos.
+                                return verDetalles(x, lista[x], `Medio`, lista)
+                            };
+
+                            boton.innerHTML = "Ver detalles";                            
+                        };
+
+                        posicion.textContent = `(Medio)`
+
+                        mediosLi.appendChild(posicion);
+                        mediosLi.appendChild(boton);
+
+                        listaMedios.appendChild(mediosLi);
+
+                    } else {
+                        const delanterosLi = document.createElement("li");
+                        delanterosLi.id = "delanteros";
+
+                        if (lista[x] == null) {
+                            delanterosLi.textContent = `Espacio vacío`;
+                        } else {
+                            delanterosLi.textContent = `${lista[x].nombre}`;
+
+                            // Redirecciono el botón para que muestre los detalles del jugador.
+                            boton.onclick = function() {
+                                // Envío los detalles como elementos.
+                                return verDetalles(x, lista[x], `Delantero`, lista)
+                            };
+
+                            boton.innerHTML = "Ver detalles";                            
+                        };
+
+                        posicion.textContent = `(Delantero)`
+
+                        delanterosLi.appendChild(posicion);
+                        delanterosLi.appendChild(boton);
+                        
+                        listaDelanteros.appendChild(delanterosLi);
+                    };
+                };
+
+                // Guarda la lista de jugadores para que no se pierda cuando se reinicie el sitio.
+                localStorage.setItem('listadoPosiciones', JSON.stringify(lista));
+
+                return ""
+            };
+
+            let list = []
+
+            const valor = localStorage.getItem('listadoPosiciones');
+            let listaObjs;
+
+            if (valor === null) {
+
+                // Se activa si el sitio se carga por primera vez.
+                document.write(formacion(list));
+
+            } else {
+
+                // Trae el elemento almacenado del localStorage.
+                const listaJSON = localStorage.getItem('listadoPosiciones');
+                // Convierte el elemento de localStorage en lenguaje de javascript.
+                listaObjs = JSON.parse(listaJSON);
+
+                // Carga el sitio con las modificaciones realizadas la última vez.
+                document.write(formacion(listaObjs));
+            };
+
+        </script>
+
+    </body>
+</html>
