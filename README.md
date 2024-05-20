@@ -5,6 +5,6 @@ Diría que solo me falto agregar una opción para mostrar una lista que presente
 jugadores del equipo con toda su información pero igualmente estoy bastante contento con el 
 resultado alcanzado.
 
-Espero que gran se encuentre correctamente realizada dentro de lo que cabe.
+Espero que gran parte se encuentre correctamente realizada dentro de lo que cabe.
 
 Saludos.
